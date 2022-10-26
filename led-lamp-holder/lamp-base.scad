@@ -1,10 +1,15 @@
 include <../qpp_all.scad>
 
 // peg parameters
+// '-> outer peg diameter
 peg_D = 11.5;
+// '-> groove diameter
 peg_d = 8;
+// '-> peg height
 peg_H = 16;
+// '-> groove height
 peg_h = 5;
+// '-> groove offset from the base
 peg_h_off = peg_H - peg_h - 6.5;
 
 $fn=90;
