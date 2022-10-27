@@ -33,7 +33,7 @@ module peg()
 module base()
 {
     _D = 2*base_wt + base_D;
-    _H = base_wt + base_h; 
+    _H = base_wt + base_h;
     translate([0,0,-_H])
     difference()
     {
@@ -43,14 +43,33 @@ module base()
     }
 }
 
+module bolt()
+{
+    _l = 20;
+    _h = 3;
+    _d = 3;
+    _D = 5.6;
+    translate([0,0,peg_H-_h-_l+qpp_eps])
+    {
+        // shaft
+        cylinder(h=_l+qpp_eps,d=_d);
+        // head
+        translate([0,0,_l])
+            cylinder(h=_h,d=_D);
+    }
+}
+
 module lamp_holder()
 {
-    //_h_tmp = 3;
-    //_d_tmp = 20;
-    //cylinder(d=_d_tmp, h=_h_tmp);
-    //translate([0,0,_h_tmp])
-    peg();
-    base();
+    difference()
+    {
+        union()
+        {
+            peg();
+            base();
+        }
+        #bolt();
+    }
 }
 
 lamp_holder();
