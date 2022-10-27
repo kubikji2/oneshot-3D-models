@@ -1,2 +1,6 @@
 # ignore all stl
 *.stl
+# ignore all gcodes
+*.gcode
+# ignore all prusalicer projects
+*.3mf
