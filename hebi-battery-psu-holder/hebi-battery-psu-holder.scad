@@ -99,9 +99,14 @@ module unit()
     // LED gauge
     translate([(ps_w-ps_led_g)/2,-wt,0])
         %cube([ps_led_g,ps_t,ps_l]);
+
+    //color("red")
+    rotate([0,-90,0])
+    translate([-wt/2-tol,-wt-wt/2,-g_w-tol])
+        gripper();
 }
 
-//unit();
+unit();
 
 
 module __table_hook(l=ps_l/4, t=wall_t+wt, off=2)
@@ -120,27 +125,8 @@ _w = ps_w + 2*wt;
 _ht = wall_t + wt;
 _ho = _l-tt-to;
 
-// shape parameters
-
-
-module __shape()
-{
-
-}
-
 module gripper()
 {
-    /*
-    points = [  [   0,  0, 0],
-                [ -_l,  0, 0],
-                [ -_l, _t, 0],
-                [   0, _t, 0],            
-                [  _ho+to-_ht-wt/2, _t, 0],
-                [  _ho+to, _t+_ht, 0],
-                [  _ho+to, _t, 0],
-                [  _l, _t, 0] ];
-    */
-
     s_l = s_h + wt + 2*tol;
     s_t = ps_t + 3*wt;
     s_t2 = s_t - wt;
@@ -163,10 +149,10 @@ module gripper()
     
     hullify(pts=points)
         cylinder(d=wt,h=g_w);
-        
+
     // aux geometry (hole between table desk and the cable holding wall)
-    %translate([s_l-wt/2, s_t+wt/2, 0])
-        cube([tt,10,10]);
+    //%translate([s_l-wt/2, s_t+wt/2, 0])
+    //    cube([tt,10,10]);
 
     // adding table hook
     translate([s_l,s_t,0])
@@ -174,13 +160,14 @@ module gripper()
             cylinder(d=wt,h=g_w);      
 }
 
+/*
 %cube([ps_l,ps_t,ps_w]);
 translate([0,-wt,0])
 %cube([s_h,ps_t+2*wt,ps_w]);
 
 translate([-wt/2-tol,-wt-wt/2,0])
     gripper();
-
+*/
 
 
 
