@@ -1,9 +1,15 @@
+// holder for the HEBI power source unit (AC/DC converter)
+// consist of two parts (three pieces)
+// '-> gripper (2x) - hangs on the table
+// '-> socket (1x) - holds the PSU and gripper together
 
 // PSU
 ps_w = 72+1;
+// '-> PSU width
 ps_l = 170;
+// '-> PSU length
 ps_t = 40.5;
-
+// '-> PSU thickness
 ps_led_g = 33;
 // '-> led gauge
 //ps_cab_w = 12.5+1;
@@ -11,19 +17,44 @@ ps_cab_w = ps_led_g;
 // '-> cable width
 ps_cab_d = 30;
 
-// cable wall holder
-wall_t = 10;
-
 // wall thickness
 wt = 2.4;
 
+// tolerance
+tol = 0.2;
+
+// gripper
+g_w = (ps_w - 2*wt - 4*tol - ps_led_g)/2;
+// '-> gripper width
+
+
+// cable wall holder
+wall_t = 10;
+
 // table thickness
 tt = 40;
+// '-> table thickness
 to = 40;
+// '-> distance between table and the hook
 
 $fn = 60;
 
+// replicates and pair-wise hullify the children at given points
+module hullify(points)
+{
+    for(i=[0:len(pts)-2])
+    {
+        hull()
+        {
+            translate(pts[i])
+                children();
+            translate(pts[i+1])
+                children();
+        }
+    }
+}
 
+//
 module hull_line(d,h,pts)
 {
     for(i=[0:len(pts)-2])
