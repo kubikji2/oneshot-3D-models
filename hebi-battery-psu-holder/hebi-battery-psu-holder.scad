@@ -101,7 +101,7 @@ module unit()
         %cube([ps_led_g,ps_t,ps_l]);
 }
 
-unit();
+//unit();
 
 
 module __table_hook(l=ps_l/4, t=wall_t+wt, off=2)
@@ -125,6 +125,12 @@ _ho = _l-tt-to;
 
 module __shape()
 {
+
+}
+
+module gripper()
+{
+    /*
     points = [  [   0,  0, 0],
                 [ -_l,  0, 0],
                 [ -_l, _t, 0],
@@ -133,26 +139,53 @@ module __shape()
                 [  _ho+to, _t+_ht, 0],
                 [  _ho+to, _t, 0],
                 [  _l, _t, 0] ];
-    //hull_line(d=wt,h=ps_w+2*wt,pts=points);
+    */
+
+    s_l = s_h + wt + 2*tol;
+    s_t = ps_t + 3*wt;
+    s_t2 = s_t - wt;
+
+    h_o = s_l + to - wt;
+    h_l = wall_t;
+    // '-> hook offset
+    points = [  [s_l, wt, 0],  
+                [s_l, 0, 0],
+                [0,-tol,0],
+                [0,s_t+tol,0],
+                [s_l,s_t,0],
+                [s_l,s_t2,0],
+                [s_l,s_t2,0],
+                [h_o-h_l,s_t2,0],
+                [h_o,s_t2+h_l,0],
+                [h_o,s_t2,0],
+                [ps_l,s_t2,0]
+            ];
+    
     hullify(pts=points)
-        children();
-    // aux geometry
-    %translate([_l,_t,0])
-    {
-        translate([-tt-to+wt/2, 0, 0])
-            cube([tt,10,10]);
-    }
-}
-
-module gripper()
-{
-    //__table_hook()
-    //    cylinder(d=wt,h=g_w);
-    __shape()
         cylinder(d=wt,h=g_w);
+        
+    // aux geometry (hole between table desk and the cable holding wall)
+    %translate([s_l-wt/2, s_t+wt/2, 0])
+        cube([tt,10,10]);
+
+    // adding table hook
+    translate([s_l,s_t,0])
+        __table_hook()
+            cylinder(d=wt,h=g_w);      
 }
 
-//gripper();
+%cube([ps_l,ps_t,ps_w]);
+translate([0,-wt,0])
+%cube([s_h,ps_t+2*wt,ps_w]);
+
+translate([-wt/2-tol,-wt-wt/2,0])
+    gripper();
+
+
+
+
+/////////////////////////////////////////////////////////////
+
 
 //
 module hull_line(d,h,pts)
