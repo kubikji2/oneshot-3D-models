@@ -27,6 +27,9 @@ tol = 0.2;
 g_w = (ps_w - 2*wt - 4*tol - ps_led_g)/2;
 // '-> gripper width
 
+// socket
+s_h = ps_l/2;
+// '-> socket height
 
 // cable-holder wall thickness
 wall_t = 10;
@@ -40,7 +43,7 @@ to = 40;
 $fn = 60;
 
 // replicates and pair-wise hullify the children at given points
-module hullify(points)
+module hullify(pts)
 {
     for(i=[0:len(pts)-2])
     {
@@ -54,6 +57,52 @@ module hullify(points)
     }
 }
 
+// socket piece
+module socket()
+{
+    s_t = ps_t + wt;
+    // '-> socket thickness
+    s_w = ps_w + wt;
+    // '-> socket width
+    s_s = g_w + wt + 2*tol;
+    // '-> socket strips
+    points = [  [s_s, -wt, 0],
+                [s_s, 0, 0],
+                [0, 0, 0],
+                [0, -wt, 0],
+                [0, s_t+wt, 0],
+                [0, s_t, 0],
+                [s_s, s_t, 0],
+                [s_s, s_t+wt, 0],
+                [s_w-s_s, s_t+wt, 0],
+                [s_w-s_s, s_t, 0],
+                [s_w,s_t,0],
+                [s_w,s_t+wt,0],
+                [s_w,-wt,0],
+                [s_w,0,0],
+                [s_w-s_s,0,0],
+                [s_w-s_s,-wt,0]
+             ];
+    
+    translate([-wt/2,-wt/2,0])
+    hullify(pts=points)
+        cylinder(h=s_h,d=wt);
+}
+
+module unit()
+{
+    socket();
+
+    // PSU
+    %cube([ps_w,ps_t,ps_l]);
+    
+    // LED gauge
+    translate([(ps_w-ps_led_g)/2,-wt,0])
+        %cube([ps_led_g,ps_t,ps_l]);
+}
+
+unit();
+
 
 module __table_hook(l=ps_l/4, t=wall_t+wt, off=2)
 {   
@@ -65,21 +114,45 @@ module __table_hook(l=ps_l/4, t=wall_t+wt, off=2)
         children();
 }
 
+_l = ps_l/2;
+_t = ps_t + wt;
+_w = ps_w + 2*wt;
+_ht = wall_t + wt;
+_ho = _l-tt-to;
+
+// shape parameters
+
+
 module __shape()
 {
-
+    points = [  [   0,  0, 0],
+                [ -_l,  0, 0],
+                [ -_l, _t, 0],
+                [   0, _t, 0],            
+                [  _ho+to-_ht-wt/2, _t, 0],
+                [  _ho+to, _t+_ht, 0],
+                [  _ho+to, _t, 0],
+                [  _l, _t, 0] ];
+    //hull_line(d=wt,h=ps_w+2*wt,pts=points);
+    hullify(pts=points)
+        children();
+    // aux geometry
+    %translate([_l,_t,0])
+    {
+        translate([-tt-to+wt/2, 0, 0])
+            cube([tt,10,10]);
+    }
 }
-
-
 
 module gripper()
 {
-    __table_hook()
+    //__table_hook()
+    //    cylinder(d=wt,h=g_w);
+    __shape()
         cylinder(d=wt,h=g_w);
-    //__shape();
 }
 
-gripper();
+//gripper();
 
 //
 module hull_line(d,h,pts)
@@ -97,11 +170,6 @@ module hull_line(d,h,pts)
 }
 
 
-_l = ps_l/2;
-_t = ps_t + wt;
-_w = ps_w + 2*wt;
-_ht = wall_t + wt;
-_ho = _l-tt-to;
 
 module shape()
 {
