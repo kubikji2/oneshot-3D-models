@@ -28,7 +28,7 @@ g_w = (ps_w - 2*wt - 4*tol - ps_led_g)/2;
 // '-> gripper width
 
 
-// cable wall holder
+// cable-holder wall thickness
 wall_t = 10;
 
 // table thickness
@@ -53,6 +53,33 @@ module hullify(points)
         }
     }
 }
+
+
+module __table_hook(l=ps_l/4, t=wall_t+wt, off=2)
+{   
+    points = [  [  0, 0, 0],
+                [  0, t, 0],
+                [  -l, t-off, 0]
+             ];
+    hullify(pts=points)
+        children();
+}
+
+module __shape()
+{
+
+}
+
+
+
+module gripper()
+{
+    __table_hook()
+        cylinder(d=wt,h=g_w);
+    //__shape();
+}
+
+gripper();
 
 //
 module hull_line(d,h,pts)
@@ -96,6 +123,7 @@ module shape()
     }
 }
 
+/*
 module hook()
 {
     
@@ -105,6 +133,7 @@ module hook()
              ];
     hull_line(d=wt,h=ps_w+2*wt,pts=points);
 }
+*/
 
 module holder()
 {
@@ -166,4 +195,4 @@ module holder()
     }
 }
 
-holder();
+//holder();
