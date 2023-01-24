@@ -28,7 +28,7 @@ g_w = (ps_w - 2*wt - 4*tol - ps_led_g)/2;
 // '-> gripper width
 
 // socket
-s_h = ps_l/2;
+s_h = ps_l/2 + wt;
 // '-> socket height
 
 // cable-holder wall thickness
@@ -84,9 +84,20 @@ module socket()
                 [s_w-s_s,-wt,0]
              ];
     
+    
     translate([-wt/2,-wt/2,0])
-    hullify(pts=points)
-        cylinder(h=s_h,d=wt);
+    {   
+        // sides
+        hullify(pts=points)
+            cylinder(h=s_h,d=wt);
+
+        // left bottom
+        cube([s_s,s_t,wt]);
+
+        // right bottom
+        translate([s_w-s_s,0,0])
+            cube([s_s,s_t,wt]);
+    }
 }
 
 module unit()
@@ -94,11 +105,14 @@ module unit()
     socket();
 
     // PSU
-    %cube([ps_w,ps_t,ps_l]);
+    %translate([0,0,wt])
+    {
+        cube([ps_w,ps_t,ps_l]);
     
-    // LED gauge
-    translate([(ps_w-ps_led_g)/2,-wt,0])
-        %cube([ps_led_g,ps_t,ps_l]);
+        // LED gauge
+        translate([(ps_w-ps_led_g)/2,-wt,0])
+            cube([ps_led_g,ps_t,ps_l]);
+    }
 
     //color("red")
     rotate([0,-90,0])
@@ -144,7 +158,7 @@ module gripper()
                 [h_o-h_l,s_t2,0],
                 [h_o,s_t2+h_l,0],
                 [h_o,s_t2,0],
-                [ps_l,s_t2,0]
+                [ps_l + wt,s_t2,0]
             ];
     
     hullify(pts=points)
