@@ -18,7 +18,7 @@ ps_cab_w = ps_led_g;
 ps_cab_d = 30;
 
 // wall thickness
-wt = 2.4;
+wt = 3;
 
 // tolerance
 tol = 0.2;
