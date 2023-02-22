@@ -6,11 +6,15 @@ h = 5.5;
 // t = 34;
 // t2 = 35;
 
+$fn = 60;
+
 module circle(){
-    for(phi = [0 : 2 : 360]){
-        translate([r_in*cos(phi), r_in*sin(phi), 0]){
-        cylinder(h = h, r = 0.5, center = true);
-        }
+    for(phi = [0 : 2 : 360])
+    {
+        rotate([0,0,phi])
+            translate([r_in+0.5, 0, 0])
+                cylinder(h = h, r = 0.5, center = true);
+        
     }
 }
 
@@ -22,7 +26,7 @@ module upanddown(){
 }
 
 union(){
-    circle();
+    circle($fn=18);
     translate([0, 0, (h/2)-0.25]){
         upanddown();
     }
