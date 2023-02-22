@@ -2,3 +2,8 @@
 	path = qpp-openscad-library
 	url = https://github.com/kubikji2/qpp-openscad-library
 	branch = master
+	
+[submodule "solidpp"]
+	path = solidpp
+	url = https://github.com/kubikji2/solidpp
+	branch = master
