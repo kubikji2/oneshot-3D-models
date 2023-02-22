@@ -50,4 +50,40 @@ module single_axis()
 
 }
 
-single_axis();
+//single_axis();
+
+include<../solidpp/cubepp_mods/bevel_corners_cubepp.scad>
+// '-> including the cubepp without the corners
+
+tol = 0.15;
+// '-> tight fit tolerance
+wt = 4;
+// '-> wall thickness
+
+module origin()
+{
+    _a = a + 2*tol;
+    _A = a + 2*wt;
+    difference()
+    {
+        // main cube
+        translate([-wt,-wt,-wt])
+            bevel_corners_cubepp([_A,_A,_A], cut=_A/3);
+
+        // x-axis cut
+        translate([-tol, -tol, -tol])
+        {
+            // x-axis cut
+            cube([l,_a,_a]);
+
+            // y-axis cut
+            cube([_a,l,_a]);
+
+            // z-axis cut
+            cube([_a,_a,l]);
+        }
+    }
+
+}
+
+origin();
