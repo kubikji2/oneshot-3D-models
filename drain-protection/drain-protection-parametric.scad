@@ -2,30 +2,26 @@ d_out = 115.6;
 r_out = d_out/2;
 d_in = 112.6;
 r_in = d_in/2;
-h = 5.5;
+h = 7;
 // t = 34;
 // t2 = 35;
 
-$fn = 60
+t = r_out-r_in;
+
+$fn = 60;
 
 module circle(){
     for(phi = [0 : 4 : 360]){
         translate([r_in*cos(phi), r_in*sin(phi), 0]){
-        cylinder(h = h, r = 1.3, center = true);
+        cylinder(h = h, r = t, center = true);
         }
-    for(phi = [0 : 2 : 360])
-    {
-        rotate([0,0,phi])
-            translate([r_in+0.5, 0, 0])
-                cylinder(h = h, r = 0.5, center = true);
     }
-}
 }
 
 module upanddown(){
     difference(){
         cylinder(h = 0.5, r = r_out, center = true);
-        cylinder(h = 1, r = r_in-2, center = true);
+        cylinder(h = 1, r = r_in-t, center = true);
     }
 }
 
