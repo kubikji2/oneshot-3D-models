@@ -10,14 +10,6 @@ module stick(x)
     cylinder(h = x, r = d/2, center = false);
 }
 
-/*for(i = [1 : 1 : 5])
-{
-    translate([(i-1) * dist_all, 0, 0])
-    {
-        stick(7*i);
-    }
-}*/
-
 
 module main()
 {
