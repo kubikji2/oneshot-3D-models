@@ -7,14 +7,17 @@ include<../solidpp/transforms/transform_to_spp.scad>
 brsh_l = 40;
 // '-> relevant brush area length
 
-plst_h = 6.5;
+c_clrn = 0.2;
+// '-> clearance
+
+plst_h = 6.5 + 2*c_clrn;
 // '-> plastic height
-plst_w = 12.5;
+plst_w = 12.5 + 2*c_clrn;
 // '-> plastic width
 
-wrs_h = 14;
+wrs_h = 14 + 2*c_clrn;
 // '-> wires height
-wrs_w = 9;
+wrs_w = 9 + 2*c_clrn;
 // '-> wires width
 
 // cover parameters
