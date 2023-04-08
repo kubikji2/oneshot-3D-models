@@ -82,16 +82,18 @@ module holder_65w()
         translate([0, 0, w65_wt])
             cubepp(a_65w_size, align="");
 
-        // hole for the
+        // hole for the power coord
         transform_to_spp(a_65w_size, align="", pos="z")
             translate([0, 0, 2*w65_wt])
                 cubepp([pc_w+2*w65_clrn, pc_t+2*w65_clrn, 3*w65_wt], align="Z");
 
     }
 
+    // lower hook
     transform_to_spp(h_65w_size, align="", pos="xz")
         __hook_65w(false);
 
+    // upper hook
     transform_to_spp(h_65w_size, align="", pos="xZ")
         __hook_65w();
 
