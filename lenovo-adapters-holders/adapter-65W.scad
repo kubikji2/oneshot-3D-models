@@ -12,9 +12,9 @@ w65_clrn = 0.2;
 // adapter parameters
 w65_l = 109  + 2*w65_clrn;
 // '-> length
-w65_h = 65   + 2*w65_clrn;
+w65_h = 47   + 2*w65_clrn;
 // '-> height
-w65_t = 30.5 + 2*w65_clrn;
+w65_t = 30 + 2*w65_clrn;
 // '-> thickness
 
 w65_wt = 2;
