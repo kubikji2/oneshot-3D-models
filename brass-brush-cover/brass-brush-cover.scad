@@ -4,7 +4,7 @@ include<../solidpp/spherepp.scad>
 
 include<../solidpp/transforms/transform_to_spp.scad>
 
-brsh_l = 40;
+brsh_l = 40+5;
 // '-> relevant brush area length
 
 c_clrn = 0.2;
