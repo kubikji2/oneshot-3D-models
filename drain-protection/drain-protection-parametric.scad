@@ -1,6 +1,6 @@
-d_out = 115.6;
+d_out = 113.6;
 r_out = d_out/2;
-d_in = 112.6;
+d_in = 110.6;
 r_in = d_in/2;
 h = 7;
 // t = 34;
@@ -11,7 +11,7 @@ t = r_out-r_in;
 $fn = 60;
 
 module circle(){
-    for(phi = [0 : 4 : 360]){
+    for(phi = [0 : 8 : 360]){
         translate([r_in*cos(phi), r_in*sin(phi), 0]){
         cylinder(h = h, r = t, center = true);
         }
