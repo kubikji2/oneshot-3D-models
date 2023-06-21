@@ -1,7 +1,7 @@
 $fn = 120;
 
 dist = 39.3;
-d = 5.2;
+d = 5.7;
 offset = 0.4;
 dist_all = dist + d + offset;
 
@@ -13,25 +13,25 @@ module stick(x)
 
 module main()
 {
-    translate([0, -2.5, 0])
+    translate([-5, -3, 0])
     {
-        cube([180, 5, 2]);
+        cube([195, 6, 2]);
     }
     for(i = [1 : 1 : 5])
     {
     translate([(i-1) * dist_all, 0, 0])
         {
-            stick(7*i);
+            stick(2+5*i);
         }
     }
 }
 
-offset_cyl = 0.1;
+offset_cyl = 1;
 
 module cyl()
 {
     difference(){
-        cylinder(h = 5, r = 4, center = false);
+        cylinder(h = 5, r = 5, center = false);
         cylinder(h = 50, r = (d/2) + offset_cyl, center = true);
     }
 }
