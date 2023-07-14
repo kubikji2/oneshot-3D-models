@@ -1,5 +1,5 @@
 $fn = 120;
-p_len = 22; 
+p_len = 28; 
 h_cyl = 3;
 
 
@@ -7,13 +7,16 @@ translate([-p_len, 0, 0]){
     rotate([0, 90, 0]){
         cylinder(h = h_cyl, r = 4, center = true);
     }
-    translate([2.3+4, 0, 0]){
+    translate([2.3+4, 0, 0]){ 
         rotate([0, 90, 0]){
             cylinder(h = h_cyl, r = 4, center = true);
         }
     }
     translate([0, -3.5, -1.5]){
         cube([p_len, 7, 3]);
+    }
+    translate([1.5, -3.5, -2.1]){
+        cube([3.5, 7, 4.2]);
     }
 }
 translate([0, -3.5, -10.5+2]){
