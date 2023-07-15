@@ -9,7 +9,7 @@ _r = 10;
 _R = 50;
 _h = 100;
 _h_b = _h/3;
-thickness = 4;
+thickness = 3;
 size = 2.5;
 
 // spicy way to modify fn parameter for preview and f6 rendering
@@ -57,27 +57,18 @@ module press(){
 
 w_offset = 0.5;
 r_w = 10;
-r_h = 15;
-/*
-module weight()
-{
-    union(){
-        translate([0, 0, thickness]) cylinderpp(r=_R-thickness-w_offset, h=_h+thickness, mod_list=mod_list, $fn = _fn);
-        translate([0, 0, thickness+_h+thickness]) cylinderpp(r=r_w-w_offset, h=_h+thickness, mod_list=m_list, $fn = _fn);
-        translate([0, 0, thickness+_h+thickness]) cylinderpp(r1=r_w-w_offset+_r, r2=r_w-w_offset, h=_r, mod_list=m_list, $fn = _fn);
-    }
-}
-*/
 
 r2D = r_w-w_offset;
-h2D = _h+thickness;
+h2D = 80;
 
 module weight()
 {
     union(){
-        translate([0, 0, thickness]) cylinderpp(r=_R-thickness-w_offset, h=_h+thickness, mod_list=mod_list, $fn = _fn);
-        translate([0, 0, thickness+_h+thickness]) {
-            rotate_extrude(angle = 360, convexity = 30){
+        translate([0, 0, thickness]) cylinderpp(r=_R-thickness-w_offset, h=_h+thickness, mod_list=mod_list, $fn = _fn); //basic cylinder
+        translate([0, 0, thickness+_h+thickness]) //fancy cylinder, todo rewrite and use in cylinderpp
+        {
+            rotate_extrude(angle = 360, convexity = 30)
+            {
                 square([r2D, h2D], center = false);
                 difference()
                 {
@@ -90,6 +81,10 @@ module weight()
                     translate([2*r2D, h2D-r2D]) circle(r2D);
                 }
             }
+        }
+        translate([0, 0, thickness+_h+thickness+h2D]) //funny thing on top
+        {
+            cylinderpp(r1 = 3*r2D, r2 = 0, h=2*r2D, mod_list = [round_corners(r2D/3)]);
         }
     }
 }
