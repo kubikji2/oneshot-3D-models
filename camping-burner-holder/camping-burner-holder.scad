@@ -7,8 +7,22 @@ module nut_and_bolt()
 
 }
 
+// arm parameters
+a_l = 100;
+
+a_wt = 3;
+
+a_h = 10;
+
 module arm()
 {
+
+    hull()
+    {
+        cylinderpp(d=a_wt, h=a_h, align="xz");
+        translate([a_l,0,0])
+            cylinderpp(d=a_wt, h=a_h, align="Xz");    
+    }
 
 }
 
@@ -47,17 +61,31 @@ module hullify(points)
     }
 }
 
+module arm_interface()
+{
+
+}
+
 module central_triangle()
 {
 
-    points = [for(angle=[0,120,240]) each [rotate_2D_z([c_R-c_wt/2, -10], angle), rotate_2D_z([c_R-c_wt/2, 10], angle)]];
+    angles = [0,120,240];
+    points = [for(angle=angles) each [rotate_2D_z([c_R-c_wt/2, -10], angle), rotate_2D_z([c_R-c_wt/2, 10], angle)]];
     echo(points);
 
     hullify(points)
         cylinder(d=c_wt, h=c_h);
+
+    for(a=angles)
+    {
+        rotate([0,0,a])
+            translate([c_R,0,0])
+                %arm();
+    }
 
     %cylinder(r=c_R,h=c_h);
 
 }
 
 central_triangle();
+
