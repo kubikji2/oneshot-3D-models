@@ -22,7 +22,8 @@ module nut_and_bolt()
 {
     
     // nut
-    cylinderpp(d=bnd+b_clrn, h=bnh+b_clrn, fn=6);
+    translate([0,0,-b_clrn])
+        cylinderpp(d=bnd+b_clrn, h=b_clrn+bnh+b_clrn, fn=6);
     // shaft
     cylinderpp(d=bsd+b_clrn, h=bsl+bhh);
     // head
@@ -83,12 +84,14 @@ module arm_interface(angle, is_arm=false)
 
 // arm parameters
 a_l = 100;
-
+// '-> arm length
 a_wt = 4;
-
+// '-> arm wall thickness
 a_h = bsl+bhh;
-
+// '-> arm height
 a2i = [(i_l)/2,-(i_l+a_wt)/2,0];
+// '-> transform from arm coordinte frame to the interface coordinate frame
+a_off = 2;
 
 module arm()
 {
@@ -96,14 +99,23 @@ module arm()
     {
         // basic shape
         hull()
-        {
-            cylinderpp(d=a_wt, h=a_h, align="xz");
+        {   
+            translate([clrn,0,0])
+                cylinderpp(d=a_wt, h=a_h, align="xz");
+            
             translate([a_l,0,0])
                 cylinderpp(d=a_wt, h=a_h, align="Xz");    
         }
 
         // hole for the body border
-        // TODO
+        translate([-c_R,0,a_h])
+        {
+            translate([0,0,-a_off])
+                tubepp(d=b_Di-b_wh,D=b_Do,h=b_wh,align="Z");
+            
+            tubepp(d=b_Di-b_wh, D=b_Do-b_wh,h=b_wh+a_off,align="Z");
+            
+        }
 
     }
 
@@ -123,8 +135,8 @@ b_wh = 4.5;
 b_wb = 2;
 // '-> body wall border
 
-// centeral piece parmeters
-c_R = 45;
+// centeral piece parameters
+c_R = 35;
 
 c_wt = 4;
 
@@ -169,7 +181,7 @@ module central_triangle()
             }
     }
 
-    %cylinder(r=c_R,h=c_h);
+    //%cylinder(r=c_R,h=c_h);
 
 }
 
