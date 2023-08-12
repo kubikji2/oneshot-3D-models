@@ -82,6 +82,31 @@ module arm_interface(angle, is_arm=false)
     }
 }
 
+// body parameters
+// bigger bomb parameters
+b_Do = 122;
+// '-> outer diameter
+b_Di = 116;
+// '-> inner diameter
+b_WT = 3;
+// '-> body wall thickness
+b_WH = 4.5;
+// '-> body wall height
+b_WB = 2;
+// '-> body wall border
+
+// smaller bomb parameters
+b_do = 103.5;
+// '-> outer diameter
+b_di = 98;
+// '-> inner diameter
+b_wt = 2.5;
+// '-> body wall thickness
+b_wh = 3.8;
+// '-> body wall height
+b_wb = 2;
+// '-> body wall border
+
 // arm parameters
 a_l = 100;
 // '-> arm length
@@ -107,15 +132,29 @@ module arm()
                 cylinderpp(d=a_wt, h=a_h, align="Xz");    
         }
 
-        // hole for the body border
+        // hole for bigger the body border
         translate([-c_R,0,a_h])
         {
             translate([0,0,-a_off])
-                tubepp(d=b_Di-b_wh,D=b_Do,h=b_wh,align="Z");
+                tubepp(d=b_Di-2*b_WB, D=b_Do, h=b_WH, align="Z");
             
-            tubepp(d=b_Di-b_wh, D=b_Do-b_wh,h=b_wh+a_off,align="Z");
-            
+            tubepp(d=b_Di-2*b_WB, D=b_Do-2*b_WB, h=b_WH+a_off, align="Z");            
         }
+        
+        // hole for smaller the body border
+        translate([-c_R,0,a_h])
+        {
+            translate([0,0,-a_off])
+                tubepp(d=b_di-2*b_wb, D=b_do, h=b_wh, align="Z");
+            
+            tubepp(d=b_di-2*b_wb, D=b_do-2*b_wb, h=b_wh+a_off, align="Z");
+            difference()
+            {
+                cylinderpp(d=b_di-2*b_wb, h=b_wh+a_off, align="Z");
+                cylinderpp(d1=b_di-2*b_wb, d2= b_di-2*b_wb-(b_wh+a_off), h=b_wh+a_off, align="Z");
+            }          
+        }
+        
 
     }
 
@@ -123,20 +162,8 @@ module arm()
         arm_interface(0, is_arm=true);
 }
 
-// body parameters
-b_Do = 122;
-// '-> outer diameter
-b_Di = 116;
-// '-> inner diameter
-b_wt = 3;
-// '-> body wall thickness
-b_wh = 4.5;
-// '-> body wall height
-b_wb = 2;
-// '-> body wall border
-
 // centeral piece parameters
-c_R = 35;
+c_R = 30;
 
 c_wt = 4;
 
