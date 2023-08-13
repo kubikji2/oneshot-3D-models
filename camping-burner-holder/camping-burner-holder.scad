@@ -123,15 +123,24 @@ module arm()
     difference()
     {
         // basic shape
-        hull()
-        {   
-            translate([clrn,0,0])
-                cylinderpp(d=a_wt, h=a_h, align="xz");
-            
-            translate([a_l,0,0])
-                cylinderpp(d=a_wt, h=a_h, align="Xz");    
+        union()
+        {
+            hull()
+            {   
+                translate([clrn,0,0])
+                    cylinderpp(d=a_wt, h=a_h, align="xz");
+                
+                translate([b_Do/2-c_R+a_wt,0,0])
+                    cylinderpp(d=a_wt, h=a_h, align="Xz");    
+            }
+            hull()
+            {
+                translate([b_Do/2-c_R+a_wt,0,0])
+                    cylinderpp(d=a_wt, h=a_h, align="Xz");
+                translate([a_l,0,0])
+                    cylinderpp(d=a_wt, h=a_h/3, align="Xz");
+            }
         }
-
         // hole for bigger the bomb body border
         translate([-c_R,0,a_h])
         {
@@ -215,5 +224,6 @@ module central_triangle()
 
 }
 
-central_triangle();
+//central_triangle();
 
+arm();
