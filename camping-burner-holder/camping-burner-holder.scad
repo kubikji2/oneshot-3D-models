@@ -1,6 +1,6 @@
 include<../solidpp/solidpp.scad>
 
-clrn = 0.2;
+clrn = 0.3;
 
 // bolt dimensions
 bsl = 12;
@@ -35,9 +35,9 @@ module nut_and_bolt()
 //nut_and_bolt();
 
 // interface
-i_l = 8;
+i_l = 10;
 // '-> interface length
-i_d = 8;
+i_d = 10;
 // '-> interface diameter
 i_bt = 2;
 // '-> interface bottom thickness
@@ -56,12 +56,12 @@ module arm_interface(angle, is_arm=false)
                 cylinderpp(d=i_d-2*clrn, h=c_h);
             }
 
-            // TODO remove screw
+            // bolt and nut hole
             nut_and_bolt();
 
             _A = 2*i_l;
 
-            // TODO remove the mass depending whether
+            // remove the mass depending whether
             // interface is on the arm or the centra piece
             if(is_arm)
             {
@@ -110,7 +110,7 @@ b_wb = 2;
 // arm parameters
 a_l = 100;
 // '-> arm length
-a_wt = 4;
+a_wt = 5;
 // '-> arm wall thickness
 a_h = bsl+bhh;
 // '-> arm height
@@ -132,26 +132,29 @@ module arm()
                 cylinderpp(d=a_wt, h=a_h, align="Xz");    
         }
 
-        // hole for bigger the body border
+        // hole for bigger the bomb body border
         translate([-c_R,0,a_h])
         {
             translate([0,0,-a_off])
-                tubepp(d=b_Di-2*b_WB, D=b_Do, h=b_WH, align="Z");
+                tubepp(d=b_Di-2*b_WB, D=b_Do, h=b_WH+clrn, align="Z");
             
-            tubepp(d=b_Di-2*b_WB, D=b_Do-2*b_WB, h=b_WH+a_off, align="Z");            
+            tubepp(d=b_Di-2*b_WB-clrn, D=b_Do-2*b_WB, h=b_WH+a_off+clrn, align="Z");            
         }
         
-        // hole for smaller the body border
+        // hole for smaller the bomb body border
         translate([-c_R,0,a_h])
         {
             translate([0,0,-a_off])
-                tubepp(d=b_di-2*b_wb, D=b_do, h=b_wh, align="Z");
+                tubepp(d=b_di-2*b_wb, D=b_do, h=b_wh+clrn, align="Z");
             
             tubepp(d=b_di-2*b_wb, D=b_do-2*b_wb, h=b_wh+a_off, align="Z");
+            
+            translate([0,0,clrn])
             difference()
             {
-                cylinderpp(d=b_di-2*b_wb, h=b_wh+a_off, align="Z");
-                cylinderpp(d1=b_di-2*b_wb, d2= b_di-2*b_wb-(b_wh+a_off), h=b_wh+a_off, align="Z");
+                cylinderpp(d=b_di-2*b_wb, h=b_wh+a_off+2*clrn, align="Z");
+                //translate([0,0,clrn])
+                cylinderpp(d1=b_di-2*b_wb, d2= b_di-2*b_wb-(b_wh+a_off), h=b_wh+a_off+2*clrn, align="Z");
             }          
         }
         
@@ -165,7 +168,7 @@ module arm()
 // centeral piece parameters
 c_R = 30;
 
-c_wt = 4;
+c_wt = 5;
 
 c_h = bsl+bhh;
 
