@@ -1,7 +1,7 @@
-include<../solidpp/cubepp.scad>
-include<../solidpp/cylinderpp.scad>
-include<../solidpp/spherepp.scad>
-include<../solidpp/modifiers/modifiers.scad>
+include<../../solidpp/cubepp.scad>
+include<../../solidpp/cylinderpp.scad>
+include<../../solidpp/spherepp.scad>
+include<../../solidpp/modifiers/modifiers.scad>
 
 // fn
 $fn=60;
@@ -174,6 +174,6 @@ module main()
 
 }
 
-//main();
+main();
 
-spacer();
+//spacer();
