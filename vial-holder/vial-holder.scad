@@ -1,9 +1,9 @@
 // based on the previous model from:
 // https://github.com/kubikji2/useful-models/tree/master
-use <../../openscad-libraries/cubepp.scad>
+include<../solidpp/solidpp.scad>
 
 eps = 0.01;
-$fn = 45;
+$fn = $preview ? 30 : 60;
 
 // base parameters
 // hole numbers
@@ -75,7 +75,9 @@ module vial_holder()
             _i_po = i_po[i];
             translate(_i_p)
                 translate(_i_po)
-                    trapezoid([ci_a+2*ci_t,ci_a+2*ci_t,ci_h+ci_t], [[ci_c,ci_c],[ci_c,ci_c]]);
+                    trapezoid(  base=[ci_a+2*ci_t, ci_a+2*ci_t],
+                                top = [ci_a-2*ci_c+2*ci_t, ci_a-2*ci_c+2*ci_t],
+                                h=ci_h+ci_t);
         }
 
         // horizontal label
@@ -133,12 +135,11 @@ module vial_holder()
     {
         translate(_p)
             translate([0,0,b_z])
-                trapezoid([ci_a,ci_a,ci_h], [[ci_c,ci_c],[ci_c,ci_c]]);
+                trapezoid(  base=[ci_a,ci_a],
+                            top=[ci_a-2*ci_c, ci_a-2*ci_c],
+                            h=ci_h);
     }
 
-    
-
-    
 }
 
 vial_holder();
