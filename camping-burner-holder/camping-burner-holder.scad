@@ -1,6 +1,43 @@
 include<../solidpp/solidpp.scad>
 
-clrn = 0.3;
+// CUSTOMIZABLE PARAMETERS
+
+// [mm] clearance for joints, bolts, nuts and pressure bottle borders
+clearance = 0.3; // [0:0.05:0.5]
+
+// [mm] inner piece radius
+inner_piece_radius = 30; // [20:30]
+
+// [mm] arm length
+arm_length = 65; // [25:5:120]
+
+// is arm tepered toward the end?
+is_arm_light = true;
+
+// what pieces are shown
+what_to_show = "all"; //["all","arm","center"]
+
+// place `children(0)` at each of provided 'points'
+// and the hullify each pair of the children
+module hullify(points)
+{
+    for (i=[0:len(points)-1])
+    {
+        hull()
+        {
+            translate(points[i])
+                children(0);
+            translate(points[(i+1)% len(points)])
+                children(0); 
+        }
+    }
+}
+
+// just fn
+$fn = $preview ? 30 : 60;
+
+// propagatin the customizable parameters
+clrn = clearance;
 
 // bolt dimensions
 bsl = 12;
@@ -17,22 +54,18 @@ bhh = 1.8;
 // '-> bolt head height
 b_clrn = clrn;
 
-// nut and bolt, aligned to the bottom
+// nut and bolt hole, aligned to the bottom
 module nut_and_bolt()
-{
-    
+{ 
     // nut
     translate([0,0,-b_clrn])
         cylinderpp(d=bnd+b_clrn, h=b_clrn+bnh+b_clrn, fn=6);
-    // shaft
+    // bolt shaft
     cylinderpp(d=bsd+b_clrn, h=bsl+bhh);
-    // head
+    // bolt head
     translate([0,0,bsl])
         cylinderpp(d=bhd+b_clrn, h=bhh+b_clrn);
-
 }
-
-//nut_and_bolt();
 
 // interface
 i_l = 10;
@@ -44,6 +77,7 @@ i_bt = 2;
 i_mt = 4;
 // '-> interface middle thickness
 
+// joint/interface between the arm and the central piece
 module arm_interface(angle, is_arm=false)
 {
     rotate([0,0,angle])
@@ -108,7 +142,7 @@ b_wb = 2;
 // '-> body wall border
 
 // arm parameters
-a_l = 100;
+a_l = arm_length;
 // '-> arm length
 a_wt = 5;
 // '-> arm wall thickness
@@ -117,7 +151,9 @@ a_h = bsl+bhh;
 a2i = [(i_l)/2,-(i_l+a_wt)/2,0];
 // '-> transform from arm coordinte frame to the interface coordinate frame
 a_off = 2;
+// '-> the stopper thickness
 
+// arm module
 module arm()
 {
     difference()
@@ -137,12 +173,13 @@ module arm()
             {
                 translate([b_Do/2-c_R+a_wt,0,0])
                     cylinderpp(d=a_wt, h=a_h, align="Xz");
-                translate([a_l,0,0])
-                    cylinderpp(d=a_wt, h=a_h/3, align="Xz");
+                _h = is_arm_light ? a_wt : a_h;
+                translate([b_Do/2-c_R+a_wt+a_l,0,0])
+                    cylinderpp(d=a_wt, h=_h, align="Xz");
             }
         }
         // hole for bigger the bomb body border
-        translate([-c_R,0,a_h])
+        translate([-c_R,0,a_h+clrn])
         {
             translate([0,0,-a_off])
                 tubepp(d=b_Di-2*b_WB, D=b_Do, h=b_WH+clrn, align="Z");
@@ -151,14 +188,14 @@ module arm()
         }
         
         // hole for smaller the bomb body border
-        translate([-c_R,0,a_h])
+        translate([-c_R,0,a_h+clrn])
         {
             translate([0,0,-a_off])
-                tubepp(d=b_di-2*b_wb, D=b_do, h=b_wh+clrn, align="Z");
+                tubepp(d=b_di-2*b_wb, D=b_do, h=b_wh+2*clrn, align="Z");
             
-            tubepp(d=b_di-2*b_wb, D=b_do-2*b_wb, h=b_wh+a_off, align="Z");
+            tubepp(d=b_di-2*b_wb, D=b_do-2*b_wb, h=b_wh+a_off+clrn, align="Z");
             
-            translate([0,0,clrn])
+            //translate([0,0,0])
             difference()
             {
                 cylinderpp(d=b_di-2*b_wb, h=b_wh+a_off+2*clrn, align="Z");
@@ -174,31 +211,17 @@ module arm()
         arm_interface(0, is_arm=true);
 }
 
+
 // centeral piece parameters
-c_R = 30;
-
+c_R = inner_piece_radius;
+// '-> distance from the center to the outer border
 c_wt = 5;
-
+// '-> central piece wall thickness
 c_h = bsl+bhh;
+// '-> central piece height
 
-
-$fn = $preview ? 30 : 60;
-
-module hullify(points)
-{
-    for (i=[0:len(points)-1])
-    {
-        hull()
-        {
-            translate(points[i])
-                children(0);
-            translate(points[(i+1)% len(points)])
-                children(0); 
-        }
-    }
-}
-
-module central_triangle()
+// central piece
+module central_triangle(show_arms=true)
 {
 
     angles = [0,120,240];
@@ -213,7 +236,8 @@ module central_triangle()
         rotate([0,0,a])
             translate([c_R,0,0])
             {
-                arm();
+                if(show_arms)
+                    arm();
                 
                 translate(a2i)
                     arm_interface(90, is_arm=false);
@@ -224,6 +248,17 @@ module central_triangle()
 
 }
 
-//central_triangle();
 
-arm();
+// MAIN
+if (what_to_show=="all")
+{
+    central_triangle(true); 
+}
+else if (what_to_show=="center")
+{
+    central_triangle(false);
+}
+else
+{
+    arm();
+}
