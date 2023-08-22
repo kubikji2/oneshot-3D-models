@@ -1,4 +1,6 @@
-include<../qpp_all.scad>
+// inlcude the solidpp
+include<../../solidpp/solidpp.scad>
+
 // nuc power unit dimensions
 h = 75.5;
 t = 26;
@@ -15,7 +17,8 @@ r = wt/2;
 sheet_t = 10;
 hook_l = h/2;
 
-$fn=qpp_fn;
+$fn=60;
+eps = 0.01;
 
 module hook()
 {
@@ -45,20 +48,30 @@ module nuc_pu_holder()
 
     difference()
     {
-        translate([_x,0,0])
-            rotate([0,-90,0])
-                qpp_cylindrocube([_z,_y,_x,r]);
+        _size = [_x,_y,_z];
+        _mod_list = [round_edges(r=r,axes="yz")];
+        cubepp(size=_size,mod_list=_mod_list);
+        
         translate([wt,wt,wt])
-            cube([l,t,h+qpp_eps]);
-        translate([-qpp_eps,wt, wt+ch])
-            cube([_x+2*qpp_eps,_y-2*wt,_z]);
+            cube([l,t,h+eps]);
+        translate([-eps,wt, wt+ch])
+            cube([_x+2*eps,_y-2*wt,_z]);
     }
 }
 
-nuc_pu_holder();
-translate([l + 2*wt,wt/2,h+wt+wt/2-hook_l])
-    rotate([0,-90,0])
-        qpp_coordinate_frame()
-        hook();
 
+module whole_model()
+{
+
+    // nuc basin-like piece
+    nuc_pu_holder();
+
+    // adding hook
+    translate([l + 2*wt,wt/2,h+wt+wt/2-hook_l])
+        rotate([0,-90,0])
+            coordinate_frame()
+            hook();
+}
+
+whole_model();
 

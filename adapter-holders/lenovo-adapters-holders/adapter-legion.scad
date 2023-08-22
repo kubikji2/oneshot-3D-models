@@ -1,8 +1,8 @@
-include<../solidpp/cylinderpp.scad>
-include<../solidpp/cubepp.scad>
-include<../solidpp/spherepp.scad>
+include<../../solidpp/cylinderpp.scad>
+include<../../solidpp/cubepp.scad>
+include<../../solidpp/spherepp.scad>
 
-include<../solidpp/transforms/transform_to_spp.scad>
+include<../../solidpp/transforms/transform_to_spp.scad>
 
 include<shaft-constants.scad>
 include<power-cord-constants.scad>
