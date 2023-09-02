@@ -72,7 +72,7 @@ module __hook_lgn(is_up=true)
     }
 }
 
-module holder_lgn()
+module holder_lgn(has_hooks=true)
 {
 
     // main body
@@ -93,16 +93,18 @@ module holder_lgn()
 
     }
 
-    // lower hook 
-    transform_to_spp(h_lgn_size, align="", pos="xz")
-        __hook_lgn(false);
+    if(has_hooks)
+    {
+        // lower hook 
+        transform_to_spp(h_lgn_size, align="", pos="xz")
+            __hook_lgn(false);
 
-     // upper hook
-    transform_to_spp(h_lgn_size, align="", pos="xZ")
-        __hook_lgn();
-
+        // upper hook
+        transform_to_spp(h_lgn_size, align="", pos="xZ")
+            __hook_lgn();
+    }
 }
 
-holder_lgn();
+//holder_lgn();
 
 //__hook_lgn();

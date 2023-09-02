@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/usr/bin/env bash
 
 # init submodule and update them recursively
 # '-> `git submodule init` init submodules
