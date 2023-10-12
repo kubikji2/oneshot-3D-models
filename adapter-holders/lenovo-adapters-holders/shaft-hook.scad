@@ -18,7 +18,7 @@ module shaft_hook(length, width, wall_thickness, shaft_diameter, clearance, is_u
         hull()
         {
             // outer shell
-            translate([-wall_thickness,0,0])
+            translate([_off,0,0])
                 cylinderpp(d=_d, h=_h, align=_a);
             // connection to the adapter holder
             transform_to_spp([_d,_d,_h], align=_a,pos="X")
@@ -29,7 +29,7 @@ module shaft_hook(length, width, wall_thickness, shaft_diameter, clearance, is_u
         translate([0,0,(is_up ? 1 : -1)*_hd/2])
         {
             // shaft hole
-            translate([-wall_thickness,0,0])
+            translate([_off,0,0])
                 cylinderpp(d=shaft_diameter, h=_H, align=_a);
 
             // assembly shaft hole
