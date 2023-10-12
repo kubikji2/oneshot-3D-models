@@ -83,6 +83,6 @@ module holder_65w_lenovo(has_hooks=true)
 
 }
 
-holder_65w_lenovo();
+//holder_65w_lenovo();
 
 //__hook_65w_lenovo();
