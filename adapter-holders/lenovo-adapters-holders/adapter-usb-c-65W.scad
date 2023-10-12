@@ -49,7 +49,8 @@ module __hook_65w_usb_c(is_up=true)
         hull()
         {
             // outer shell
-            cylinderpp(d=_d, h=_h, align=_a);
+            translate([-lgn_wt,0,0])
+                cylinderpp(d=_d, h=_h, align=_a);
             // connection to the adapter holder
             transform_to_spp([_d,_d,_h], align=_a,pos="X")
                 cubepp([w65_wt_c,h_65w_y_c,_h], align="X");
@@ -59,7 +60,8 @@ module __hook_65w_usb_c(is_up=true)
         translate([0,0,(is_up ? 1 : -1)*_hd/2])
         {
             // shaft hole
-            cylinderpp(d=shaft_d, h=_H, align=_a);
+            translate([-lgn_wt,0,0])
+                cylinderpp(d=shaft_d, h=_H, align=_a);
 
             // assembly shaft hole
             _hole_d = 3*shaft_d/4; //shaft_d-2*w65_wt_c;

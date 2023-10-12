@@ -53,14 +53,15 @@ module __hook_lgn(is_up=true)
         hull()
         {
             // outer shell
-            cylinderpp(d=_d, h=_h, align=_a);
+            translate([-lgn_wt,0,0])
+                cylinderpp(d=_d, h=_h, align=_a);
             // connection to the adapter holder
             transform_to_spp([_d,_d,_h], align=_a,pos="X")
                 cubepp([lgn_wt,h_lgn_y,_h], align="X");
 
         }
 
-        translate([0,0,(is_up ? 1 : -1)*_hd/2])
+        translate([-lgn_wt,0,(is_up ? 1 : -1)*_hd/2])
         {
             // shaft hole
             cylinderpp(d=shaft_d, h=_H, align=_a);
