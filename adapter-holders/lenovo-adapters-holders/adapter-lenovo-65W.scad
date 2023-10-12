@@ -6,6 +6,7 @@ include<../../solidpp/transforms/transform_to_spp.scad>
 
 include<shaft-constants.scad>
 include<power-cord-constants.scad>
+use<shaft-hook.scad>
 
 w65_clrn = 0.2;
 
@@ -38,40 +39,14 @@ $fn = $preview ? 30 : 60;
 pc_off_l = 7;
 // '-> offset
 
-module __hook_65w_lenovo(is_up=true)
+module __hook_65w_lenovo(is_up=true, clearance=0.5)
 {
-    _h = w65_l_l/4;
-    _H = _h+w65_wt_l;
-    _hd = _H-_h;
-    _d = shaft_d+2*w65_wt_l;
-    _a = is_up ? "Z" : "z";
-    
-    translate([w65_wt_l,0,0])
-    transform_to_spp([_d, _d, _h], align="", pos="x")
-    difference()
-    {   
-        hull()
-        {
-            // outer shell
-            translate([-lgn_wt,0,0])
-                cylinderpp(d=_d, h=_h, align=_a);
-            // connection to the adapter holder
-            transform_to_spp([_d,_d,_h], align=_a,pos="X")
-                cubepp([w65_wt_l,h_65w_y_l,_h], align="X");
-
-        }
-
-        translate([0,0,(is_up ? 1 : -1)*_hd/2])
-        {
-            // shaft hole
-            translate([-lgn_wt,0,0])
-                cylinderpp(d=shaft_d, h=_H, align=_a);
-
-            // assembly shaft hole
-            _hole_d = 3*shaft_d/4; //shaft_d-2*w65_wt_l;
-            cubepp([_d, _hole_d , _H], align=str(_a,"X"));
-        }
-    }
+    shaft_hook( length=w65_l_l,
+                width=h_65w_y_l,
+                wall_thickness=w65_wt_l,
+                shaft_diameter=shaft_d,
+                clearance=clearance,
+                is_up=is_up);
 }
 
 module holder_65w_lenovo(has_hooks=true)
@@ -108,6 +83,6 @@ module holder_65w_lenovo(has_hooks=true)
 
 }
 
-//holder_65w_lenovo();
+holder_65w_lenovo();
 
 //__hook_65w_lenovo();
