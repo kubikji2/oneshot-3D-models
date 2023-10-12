@@ -6,6 +6,7 @@ include<../../solidpp/transforms/transform_to_spp.scad>
 
 include<shaft-constants.scad>
 include<power-cord-constants.scad>
+use<shaft-hook.scad>
 
 lgn_clrn = 0.2;
 
@@ -38,39 +39,14 @@ pc_off = 7;
 
 $fn = $preview ? 30 : 60;
 
-module __hook_lgn(is_up=true)
+module __hook_lgn(is_up=true, clearance=0.5)
 {
-    _h = lgn_l/4;
-    _H = _h+lgn_wt;
-    _hd = _H-_h;
-    _d = shaft_d+2*lgn_wt;
-    _a = is_up ? "Z" : "z";
-    
-    translate([lgn_wt,0,0])
-    transform_to_spp([_d, _d, _h], align="", pos="x")
-    difference()
-    {   
-        hull()
-        {
-            // outer shell
-            translate([-lgn_wt,0,0])
-                cylinderpp(d=_d, h=_h, align=_a);
-            // connection to the adapter holder
-            transform_to_spp([_d,_d,_h], align=_a,pos="X")
-                cubepp([lgn_wt,h_lgn_y,_h], align="X");
-
-        }
-
-        translate([-lgn_wt,0,(is_up ? 1 : -1)*_hd/2])
-        {
-            // shaft hole
-            cylinderpp(d=shaft_d, h=_H, align=_a);
-
-            // assembly shaft hole
-            _hole_d = 3*shaft_d/4; //shaft_d-2*lgn_wt;
-            cubepp([_d, _hole_d , _H], align=str(_a,"X"));
-        }
-    }
+    shaft_hook( length=lgn_l,
+                width=h_lgn_y,
+                wall_thickness=lgn_wt,
+                shaft_diameter=shaft_d,
+                clearance=clearance,
+                is_up=is_up);
 }
 
 module holder_lgn(has_hooks=true)
