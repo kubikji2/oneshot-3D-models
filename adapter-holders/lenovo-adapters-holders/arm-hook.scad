@@ -11,7 +11,7 @@ include<adapter-usb-c-65W.scad>
 $fn = $preview ? 30 : 120;
 
 // arm params
-arm_w = 20;
+arm_w = 20.5;
 // '-> width
 arm_h = 30;
 // '-> height
