@@ -1,10 +1,14 @@
 include<../../solidpp/solidpp.scad>
 
+$fn = $preview ? 30 : 120;
+
+clearance = 0.25;
+
 // adapter parameters
-adapter_width = 45;
+adapter_width = 45 + clearance;
 adapter_length = 110;
-adapter_h = 12;
-adapter_H = 16.4;
+adapter_h = 12 + clearance;
+adapter_H = 16.4 + clearance;
 adapter_rail_w = 5;
 adapter_bottom_off = 20;
 adapter_top_off = 15;
@@ -30,6 +34,11 @@ cable_hook_h = 5;
 cable_hook_off = 32;
 cable_hook_H = cable_hook_h + cable_hook_off;
 
+// shaft paramters
+shaft_d = 35;
+shaft_off = 20;
+shaft_hook_h = 20;
+
 
 module cable_hook()
 {
@@ -45,12 +54,28 @@ module cable_hook()
         translate([0,_d/2,0])
             cylinderpp(d=ethernet_d, h=3*cable_hook_h, align="");
         translate([0,_d/2,0])
-            cubepp([ethernet_d,_d,3*cable_hook_h], align="y");
+            cubepp([3*ethernet_d/4,_d,3*cable_hook_h], align="y");
     }
 }
 
 module shaft_hook()
 {
+    _D = shaft_d + 2*wt;
+    _d = shaft_d;
+    translate([0, -_d/2-shaft_off, 0])
+    difference()
+    {
+        union()
+        {
+            cylinderpp(d=_D,h=shaft_hook_h);
+            cubepp([_D,_D/2+shaft_off, shaft_hook_h], align="yz");
+        }
+        translate([0,-_d/2+shaft_off-wt,0])
+        {
+            cylinderpp(d=_d, h=3*shaft_hook_h, align="");
+            cubepp([3*_d/4,_d,3*shaft_hook_h], align="Y");
+        }
+    }
 
 }
 
@@ -107,9 +132,11 @@ module adapter_holder()
         cable_hook();
 
     // lower shaft hook
+    shaft_hook();
 
     // upper shaft hook
-
+    translate([0,0,wt+adapter_length+cable_hook_H-shaft_hook_h])
+        shaft_hook();
 }
 
 adapter_holder();
