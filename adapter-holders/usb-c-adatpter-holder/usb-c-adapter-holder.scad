@@ -20,6 +20,7 @@ cable_t = 6 + 0.5;
 ethernet_connector_w = 11.5;
 ethernet_connector_t = 8;
 ethernet_front_offset = 4;
+ethernet_d = 3.5;
 
 // holder paramters
 wt = 2;
@@ -32,10 +33,23 @@ cable_hook_H = cable_hook_h + cable_hook_off;
 
 module cable_hook()
 {
+    difference()
+    {
+        _d = 2*wt + ethernet_d;
 
+        union()
+        {
+            cylinderpp(d=_d, h=cable_hook_h, align="yz");
+            cubepp([_d, _d/2, cable_hook_h], align="yz");
+        }
+        translate([0,_d/2,0])
+            cylinderpp(d=ethernet_d, h=3*cable_hook_h, align="");
+        translate([0,_d/2,0])
+            cubepp([ethernet_d,_d,3*cable_hook_h], align="y");
+    }
 }
 
-module shaf_hook()
+module shaft_hook()
 {
 
 }
@@ -85,7 +99,16 @@ module body()
 
 module adapter_holder()
 {
+    // main body
     body();
+
+    // cable hook
+    translate([0,wt,wt+adapter_length+cable_hook_off])
+        cable_hook();
+
+    // lower shaft hook
+
+    // upper shaft hook
 
 }
 
