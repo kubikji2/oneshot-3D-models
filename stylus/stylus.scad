@@ -14,6 +14,11 @@ interface_d = 4;
 interface_h = 7;
 interface_clr = 0.2;
 
+connector_d = 2;
+connector_h = 16;
+connector_xy_clearance = 0.2;
+connector_z_clearance = 0.5;
+
 // grip
 grip_l = 25;
 
@@ -51,7 +56,8 @@ module head()
 
         // interface
         translate([0,0,-0.01])
-        cylinderpp(d=interface_d+interface_clr, h=interface_h+interface_clr);
+            cylinderpp(d=connector_d+connector_xy_clearance, h=connector_h + 2*connector_z_clearance+connector_xy_clearance);
+            //cylinderpp(d=interface_d+interface_clr, h=interface_h+interface_clr);
     }
 
 }
@@ -68,6 +74,7 @@ module stylus()
             sphere(d=tip_d);
         }
         
+        /*
         // cutting of the head and the grip
         translate([0,0,shaft_l-grip_l])
         {
@@ -78,7 +85,17 @@ module stylus()
             translate([0,0,-interface_clr])
                 tubepp(R=stylus_D, d=interface_d-interface_clr, h=2*interface_h);
         }
+        */
 
+        translate([0,0,shaft_l-grip_l])
+        {
+            // cut the tip off
+            translate([0,0,-interface_clr])
+            cylinderpp(r=stylus_D,h=stylus_l);
+            
+            // cut the hole for the peg
+            cylinderpp(d=connector_d+connector_xy_clearance, h=connector_h+2*connector_z_clearance+connector_xy_clearance, align="");
+        }
         // bottom cut
         cylinderpp(r=stylus_D, h=head_l, align="Z");
 
