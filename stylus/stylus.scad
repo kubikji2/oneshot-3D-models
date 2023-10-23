@@ -15,8 +15,8 @@ interface_h = 7;
 interface_clr = 0.2;
 
 connector_d = 2;
-connector_h = 16;
-connector_xy_clearance = 0.2;
+connector_h = 17;
+connector_xy_clearance = 0.1;
 connector_z_clearance = 0.5;
 
 // grip
