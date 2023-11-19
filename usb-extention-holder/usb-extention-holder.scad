@@ -41,7 +41,7 @@ module cover_body()
 
 
 // usb extention holder
-module usb_extention_holder()
+module usb_extention_holder(txt="MINI")
 {
 
     difference()
@@ -80,8 +80,26 @@ module usb_extention_holder()
             cylinderpp(d=usb_cable_d,h=3*wt,zet="y",align="");
             cubepp([usb_cable_d,usb_cable_d,usb_h],align="Z");
         }
+
+        // text
+        translate([0,(y-6)/2,z-0.2+DN_EPS])
+            linear_extrude(0.2)
+                offset(0.1)
+                    text(txt, valign="center", halign="center");
     }
 
 }
 
-usb_extention_holder();
+txt="MINI";
+body=false;
+
+if(body)
+{
+    usb_extention_holder(txt=txt);
+}
+else
+{
+    translate([0,(y-6)/2,z-0.2])
+        linear_extrude(0.2)
+            text(txt, valign="center", halign="center");
+}
