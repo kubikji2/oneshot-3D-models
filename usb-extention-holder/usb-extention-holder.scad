@@ -10,6 +10,7 @@ usb_d = 25;
 // '-> depth
 usb_wing_d = 7.5;
 usb_wing_w = 7;
+usb_wing_g = 29;
 usb_cable_d = 8;
 
 USB_W = 15;
@@ -55,7 +56,7 @@ module usb_extention_holder()
         // adding hole for the mounting usb holder
         _b_off = wt+3;
         mirrorpp([1,0,0], true)
-            translate([x/2-_b_off, wt, usb_h/2])
+            translate([usb_wing_g/2, wt, usb_h/2])
                 rotate([90,0,0])
                     bolt_hole(descriptor="M3x5", standard=DN_BOLT_SLOTTED_HEAD, align=DN_ALIGN_MIDDLE);
 
