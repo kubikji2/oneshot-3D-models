@@ -8,13 +8,6 @@ usb_w = 40;
 // '-> width
 usb_d = 25;
 // '-> depth
-usb_wing_d = 7.5;
-usb_wing_w = 7;
-usb_wing_g = 29;
-usb_cable_d = 8;
-
-USB_W = 15;
-USB_H = 7.5;
 
 // cover parameters
 wt = 2;
@@ -22,6 +15,15 @@ x = usb_w + 2*wt;
 y = usb_d + 3*wt;
 z = usb_h + wt;
 r = wt;
+
+// usb wing parameters
+usb_wing_d = 10-wt+0.5;
+usb_wing_w = 7;
+usb_wing_g = 29;
+usb_cable_d = 8;
+
+USB_W = 15;
+USB_H = 7.5;
 
 $fn=$preview ? 20 : 120;
 
@@ -85,13 +87,14 @@ module usb_extention_holder(txt="MINI")
         translate([0,(y-6)/2,z-0.2+DN_EPS])
             linear_extrude(0.2)
                 offset(0.1)
-                    text(txt, valign="center", halign="center");
+                    text(   txt, valign="center", halign="center",
+                            font="Liberation Sans:style=Bold");
     }
 
 }
 
-txt="MINI";
-body=false;
+txt="SLA";
+body=true;
 
 if(body)
 {
@@ -101,5 +104,6 @@ else
 {
     translate([0,(y-6)/2,z-0.2])
         linear_extrude(0.2)
-            text(txt, valign="center", halign="center");
+            text(   txt, valign="center", halign="center",
+                    font="Liberation Sans:style=Bold");
 }
