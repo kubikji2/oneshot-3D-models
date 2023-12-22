@@ -9,8 +9,8 @@ label="?????";
 
 $fn = 60;
 wi = 38.6;
-de = 19.0;
-he = 1.4;
+de = 18.0;
+he = 1;
 r_corners = 1;
 label_h = 0.6;
 
