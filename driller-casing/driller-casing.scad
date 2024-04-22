@@ -27,7 +27,7 @@ sw_off = 1;
 // '-> switch offset
 
 // mount points
-mnt_g = 15.2;
+mnt_g = 16;
 // '-> mount gauge
 mnt_d = 2;
 // '-> mount diameters 
