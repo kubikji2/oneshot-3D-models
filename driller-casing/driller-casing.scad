@@ -13,7 +13,7 @@ mot_s_d = 10;
 // '-> motor stud diameter
 mot_s_h = 3.3;
 // '-> motor stud height
-mot_c_h = 5.6;
+mot_c_h = 7;
 // '-> motor contacts height
 
 // switch paramters
@@ -27,7 +27,7 @@ sw_off = 1;
 // '-> switch offset
 
 // mount points
-mnt_g = 15;
+mnt_g = 15.2;
 // '-> mount gauge
 mnt_d = 2;
 // '-> mount diameters 
@@ -73,19 +73,21 @@ lf_bolt_descriptor = "M3x10";
 lf_nut_standard = "DIN562";
 lf_nut_d = 3;
 
-lid_tf_z = mot_b_h + sw_off + sw_w/2;
+lid_tf_z = mot_b_h + mot_c_h + sw_off + sw_w/2;
 lid_mount_off = -3;
 lid_mount_x = 10+lid_mount_off;
 lid_mount_y = 8;
 lid_mount_z_off = wt;
-lid_mount_z = mot_b_h + 2*sw_off + sw_w + wt - lid_tf_z + lid_mount_z_off;
+lid_mount_z = mot_b_h + mot_c_h + 2*sw_off + sw_w + wt - lid_tf_z + lid_mount_z_off;
 
 // cable hole
 cbl_x = 4;
 cbl_y = 2;
 
 
-lf_tf = [mot_d/2+wt, -get_bolt_head_diameter(descriptor=lf_bolt_descriptor, standard=lf_bolt_standard), lid_tf_z];
+lf_tf = [   mot_d/2+wt, 
+            -get_bolt_head_diameter(descriptor=lf_bolt_descriptor, standard=lf_bolt_standard),
+            lid_tf_z];
 
 module motor(clearance = 0.5, additional_space = 10)
 {
@@ -139,14 +141,15 @@ module lid_mount()
 module body(clearance=0.25)
 {
 
+    _wt = wt - erg_rounding;
+    _d = 2*_wt+mot_d;
+    _h_off = mot_c_h + sw_w+2*sw_off;
+    _h = mot_b_h + _h_off + 2*_wt;
+    sw_tf = [0, _d/2, mot_b_h + mot_c_h + sw_off + sw_w/2-erg_rounding];
+
     difference()
     {   
-        _wt = wt - erg_rounding;
-        _d = 2*_wt+mot_d;
-        _h_off = sw_w+2*sw_off;
-        _h = mot_b_h + _h_off + 2*_wt;
-        sw_tf = [0, _d/2, mot_b_h + sw_off + sw_w/2-erg_rounding];
-
+        
         render(10)
         minkowski()
         {
@@ -240,7 +243,7 @@ module body(clearance=0.25)
                 lid_mount();
 
         translate([0,0,wt])
-            motor(additional_space=20, clearance=0);
+            motor(additional_space=2*_h_off, clearance=0);
     }
 }
 
