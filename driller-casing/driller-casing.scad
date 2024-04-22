@@ -73,21 +73,72 @@ lf_bolt_descriptor = "M3x10";
 lf_nut_standard = "DIN562";
 lf_nut_d = 3;
 
+lid_tf_z = mot_b_h + sw_off + sw_w/2;
+lid_mount_off = -3;
+lid_mount_x = 10+lid_mount_off;
+lid_mount_y = 8;
+lid_mount_z_off = wt;
+lid_mount_z = mot_b_h + 2*sw_off + sw_w + wt - lid_tf_z + lid_mount_z_off;
 
-module motor(clearances = 0.25, additional_space = 10)
+// cable hole
+cbl_x = 4;
+cbl_y = 2;
+
+
+lf_tf = [mot_d/2+wt, -get_bolt_head_diameter(descriptor=lf_bolt_descriptor, standard=lf_bolt_standard), lid_tf_z];
+
+module motor(clearance = 0.5, additional_space = 10)
 {
     // stud hole
-    translate([0,0,clearances])
-        cylinderpp(d=mot_s_d+2*clearances, h=additional_space+mot_s_h+clearances, align="Z");
+    translate([0,0,clearance])
+        cylinderpp(d=mot_s_d+2*clearance, h=additional_space+mot_s_h+clearance, align="Z");
     // motor hole
-    translate([0,0,-clearances])
-        cylinderpp(d=mot_d+2*clearances, h=mot_b_h+clearances+additional_space);
+    translate([0,0,-clearance])
+        cylinderpp(d=mot_d+2*clearance, h=mot_b_h+clearance+additional_space);
 
 }
 
-// body shape
-module body()
+module lid_mount()
 {
+    rotate([180,0,0])
+    {
+        difference()
+        {
+            // main body
+            union()
+            {
+                translate([0, 0, lid_mount_z_off])
+                {
+                    cubepp([lid_mount_x, lid_mount_y, lid_mount_z], align="XZ");
+                
+                    translate([-lid_mount_x, 0, -lid_mount_z])
+                            cubepp([lid_mount_z/2, lid_mount_y, lid_mount_z/2], align="Xz");
+                }
+            }
+
+            // rounding 
+            translate([-lid_mount_x, 0, lid_mount_z_off-lid_mount_z/2])
+                cylinderpp(r=lid_mount_z/2,h=2*lid_mount_y,zet="y", align="X");
+
+            // mounting hole
+            rotate([0,90,0])
+            {
+                bolt_hole(descriptor=lf_bolt_descriptor, standard=lf_bolt_standard, align="t");
+
+                translate([0,0,-5])
+                    rotate([0,0,180])
+                        nut_hole(d=lf_nut_d, standard=lf_nut_standard, s_off=10, clearance=0.25, align="m");
+            }
+
+
+        }   
+    }
+}
+
+// body shape
+module body(clearance=0.25)
+{
+
     difference()
     {   
         _wt = wt - erg_rounding;
@@ -121,7 +172,7 @@ module body()
 
                         // ergonomic hole
                         mirrorpp([1,0,0], true)
-                            translate([_d/2-erg_depth, 0, erg_z_off])
+                            translate([_d/2-erg_depth+clearance, 0, erg_z_off])
                                 difference()
                                 {
                                     cylinderpp(r=erg_r, h=_h, zet="y", align="x");
@@ -161,20 +212,36 @@ module body()
         translate([0,0,mot_b_h+_h_off])
         {
             // outer cut
-            tubepp(D=2*mot_d,d=mot_d+wt,h=0.25, align="z");
+            tubepp(D=2*mot_d,d=mot_d+wt,h=clearance, align="z");
             
             // vertical cut
-            tubepp(D=mot_d+wt,d=mot_d+wt-0.25, h=1, align="z");
+            tubepp(D=mot_d+wt,d=mot_d+wt-2*clearance, h=1, align="z");
 
             // inner cut
             translate([0,0,1])
-                cylinderpp(d=mot_d+wt, h=0.25, align="z");   
+                cylinderpp(d=mot_d+wt, h=clearance, align="z");   
         }
 
-        // TODO lid mounting holes
+        // lid mounting holes
+        mirrorpp([1,0,0], true)
+            translate(lf_tf)
+                rotate([0,90,0])
+                    bolt_hole(descriptor=lf_bolt_descriptor, standard=lf_bolt_standard, align="t");
+        
+        // top hole
+        cubepp([cbl_x+2*clearance, cbl_y+2*clearance, 2*_h], align="z", mod_list=[round_edges(r=cbl_y/2)]);
     }
 
-    // TODO add mount to the lid
+    // add mount to the lid
+    intersection()
+    {
+        mirrorpp([1,0,0], true)
+            translate(lf_tf+[lid_mount_off,0,0])
+                lid_mount();
+
+        translate([0,0,wt])
+            motor(additional_space=20, clearance=0);
+    }
 }
 
 
