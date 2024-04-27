@@ -1,3 +1,3 @@
 # Natural History Collection Separator
 
-Separators used to organize history collection.
+This separator is used to organize history collection.
