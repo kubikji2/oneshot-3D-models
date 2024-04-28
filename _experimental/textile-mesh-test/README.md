@@ -1,3 +1,3 @@
 # Textile mesh
 
-Testing printing different patters on the mesh textile.
+Testing printing different patterns on the mesh textile.
