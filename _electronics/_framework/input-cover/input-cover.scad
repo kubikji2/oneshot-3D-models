@@ -9,21 +9,21 @@ bolt_clearance = -0.05;
 // body parameter
 body_x = 298;
 // '-> x body size, measured
-body_y = 230;
+body_y = 229;
 // '-> y body size, measured
 body_z = 1;
 // '-> z body size, measured
 body_r = 7;
 // '-> body rounding radius
 body_ears_x = 18;
-body_ears_y = 12;
+body_ears_y = 13;
 body_cut_x = body_x-2*body_ears_x;
 // '-> body cut x length
 body_cut_y = body_ears_y;
 // '-> body cut y length
 
 // positioning
-front_x_off = 16;
+front_x_off = 15;
 // '-> front x offset
 front_y_off = 17;
 // '-> front y offset
