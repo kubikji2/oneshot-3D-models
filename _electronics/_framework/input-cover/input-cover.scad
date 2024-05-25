@@ -23,12 +23,12 @@ body_cut_y = body_ears_y;
 // '-> body cut y length
 
 // positioning
-front_x_off = 15;
+front_x_off = 17;
 // '-> front x offset
 front_y_off = 17;
 // '-> front y offset
 
-back_x_off = 10;
+back_x_off = 9.5;
 // '-> back x offset
 back_y_off = 6;
 // '-> back y offset
