@@ -7,9 +7,9 @@ bolt_d = 2;
 bolt_clearance = -0.05;
 
 // body parameter
-body_x = 296;
+body_x = 298;
 // '-> x body size, measured
-body_y = 228;
+body_y = 230;
 // '-> y body size, measured
 body_z = 1;
 // '-> z body size, measured
@@ -23,14 +23,14 @@ body_cut_y = body_ears_y;
 // '-> body cut y length
 
 // positioning
-front_x_off = 15;
+front_x_off = 16;
 // '-> front x offset
-front_y_off = 16;
+front_y_off = 17;
 // '-> front y offset
 
-back_x_off = 9;
+back_x_off = 10;
 // '-> back x offset
-back_y_off = 5;
+back_y_off = 6;
 // '-> back y offset
 
 // studs
