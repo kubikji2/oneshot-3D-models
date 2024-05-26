@@ -130,20 +130,122 @@ module input_cover()
     replicate_at([[back_x_off, body_y-back_y_off, 0], [body_x-back_x_off, body_y-back_y_off, 0]])
         back_stud();
 
+    /*
     // middle stud
     translate([body_x/2, body_y-body_cut_y-middle_y_off, 0])
         middle_stud();
+    */
+
 }
+
+
+module parrot()
+{
+    mirror([1,0,0])
+        scale([0.5,0.5,0.4/10])
+            import("graphics/framework-parrot.stl");
+}
+
+module input_cover_with_parrot(visual=true, is_left=false, is_parrot=false)
+{
+    color("silver")
+    intersection()
+    {
+        difference()
+        {
+            if (!is_parrot)
+            {
+                input_cover();
+            }
+
+            union()
+            {
+                translate([body_x/4, body_y/2, -0.01])
+                {
+                    parrot();
+                }
+
+                translate([3*body_x/4, body_y/2, -0.01])
+                    mirror([1,0,0])
+                    {
+                        color("silver")
+                            parrot();
+                    }
+            }
+        }
+
+        if (is_left)
+        {
+            translate([0,0,0])
+                cubepp([body_x/2-0.25,body_y,20], align="xyz");
+        }
+        else
+        {
+            translate([body_x/2+0.25,0,0])
+                cubepp([body_x/2,body_y,20], align="xyz");
+        }
+    }
+
+    if (visual)
+    {   
+        %color("orange")
+        intersection()
+        {
+            translate([body_x/4, body_y/2, -0.01])
+                    parrot();
+        
+            if (is_left)
+            {
+                translate([0,0,0])
+                    cubepp([body_x/2-0.25,body_y,20], align="xy");
+            }
+            else
+            {
+                translate([body_x/2+0.25,0,0])
+                    cubepp([body_x/2,body_y,20], align="xy");
+            }
+        }
+
+        %color("green")
+        intersection()
+        {
+            
+            translate([3*body_x/4, body_y/2, -0.01])
+                mirror([1,0,0])
+                    parrot();
+
+            if (is_left)
+            {
+                translate([0,0,0])
+                    cubepp([body_x/2-0.25,body_y,20], align="xy");
+            }
+            else
+            {
+                translate([body_x/2+0.25,0,0])
+                    cubepp([body_x/2,body_y,20], align="xy");
+            }
+        }
+    }
+
+}
+
+is_left = true;
+is_parrot = false;
+
+input_cover_with_parrot(is_left=is_left, is_parrot=is_parrot);
 
 module test()
 {
     // front selection
+    /*
     intersection()
     {
         input_cover();
         cube([25,25,20]);
     }
+    */
 
+    /*
     // back selection
     intersection()
     {
@@ -151,7 +253,9 @@ module test()
         translate([0,body_y,0])
             cubepp([25,25,20], align="xYz");
     }
+    */
 
+    /*
     // side
     intersection()
     {
@@ -159,7 +263,25 @@ module test()
         translate([body_x,0,0])
             cubepp([20,body_y,20], align="Xyz");
     }
+    */
+
+    // front left
+    intersection()
+    {
+        input_cover();
+        translate([0,0,0])
+            cubepp([body_x/2-0.25,20,20], align="xyz");
+    }
+
+    // front right
+    intersection()
+    {
+        input_cover();
+        translate([body_x/2+0.25,0,0])
+            cubepp([body_x/2,20,20], align="xyz");
+    }
 
 }
 
-test();
+//test();
+
