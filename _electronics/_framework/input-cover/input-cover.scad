@@ -30,7 +30,7 @@ front_y_off = 17;
 
 back_x_off = 9.5;
 // '-> back x offset
-back_y_off = 6;
+back_y_off = 6.5;
 // '-> back y offset
 
 // studs
