@@ -81,8 +81,8 @@ lid_mount_z_off = wt;
 lid_mount_z = mot_b_h + mot_c_h + 2*sw_off + sw_w + wt - lid_tf_z + lid_mount_z_off;
 
 // cable hole
-cbl_x = 4;
-cbl_y = 2;
+cbl_x = 5;
+cbl_y = 2.5;
 
 
 lf_tf = [   mot_d/2+wt, 
