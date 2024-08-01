@@ -7,7 +7,7 @@
 
 use<Einsy-doors-original.scad>
 
-ext_h = 5;
+ext_h = 0;
 
 fan_wt = 2;
 fan_h = 5;
@@ -29,7 +29,8 @@ module body()
     translate([98,1,0]) cube([7.5,5,body_h]);   
     translate([0.5,0.5,0]) cube([5,6.5,body_h]);  
     // top reinforcement
-    translate([1,0,0]) cube([10,87.5,6+ext_h]);   
+    //translate([1,0,0]) cube([10,87.5,6+ext_h]);
+    
     // bottom reinfocement
     translate([99.5,0,0]) cube([6,87.5,7+ext_h]); 
     // 
@@ -56,8 +57,9 @@ module body()
     translate([102,3.5,12.8+ext_h]) rotate([0,0,0]) cylinder( h=3.2, r1=1.8, r2=3.5, $fn=30); 
 
     // fan holder
-    translate([9,22,1])
+    translate([1,22,1])
         cube([50+2*fan_wt, 50+2*fan_wt,fan_h]);
+
     
 }
 
@@ -80,8 +82,22 @@ module ventilation_holes()
     }
     for ( i = [-7 : -6] )
     {
-      translate([46 + (i*6),20.5,-1]) cube([3.65,19+40,1.2]);
+      //translate([46 + (i*6),20.5,-1]) cube([3.65,19+40,1.2]);
+        translate([46 + (i*6),10.5,-1]) cube([3.65,19+50,1.2]);
+        translate([46 + (i*6),10.5,-1]) cube([3.65,19,2.5]);
+        translate([46 + (i*6),10.5+25,-1]) cube([3.65,19,2.5]);
+        translate([46 + (i*6),10.5+50,-1]) cube([3.65,13,2.5]);
     }
+
+    rotate([0,-90,0])
+    {
+        translate([11,10.5,-2.1]) cube([6,19+60,2.5]);
+        //translate([10,10.5,-2.1]) cube([3.65,19,2.5]);
+        //translate([10,10.5+25,-2.1]) cube([3.65,19,2.5]);
+        //translate([10,10.5+50,-2.1]) cube([3.65,13,2.5]);
+
+    }
+
     
     //translate([15,10,1]) cube([20,55,1.5]);  
 }
@@ -127,7 +143,7 @@ module cutouts()
     translate([55.65,0.5,12+ext_h]) cube([5.7,10,2.2]);  
 
     // side panel lightning slot
-    translate([2,10,3+ext_h] ) cube([7,65,5]);  
+    //translate([2,10,3+ext_h] ) cube([7,65,5]);  
     translate([101,10,3+ext_h] ) cube([3,70,5]);  
 
     // corners - cut
@@ -135,10 +151,23 @@ module cutouts()
     translate([61,12,1.5]) rotate([0,0,-70]) cube([10,10,50]);  
     translate([16,2,1.5]) rotate([0,0,45]) cube([5,5,50]);  
 
-    translate([9,22,1.5])
+    // fan cut
+    translate([1,22,1.5])
         translate([fan_wt,fan_wt,0])
             cube([50,50,2*fan_h]);
 
+    // hinge cut
+    translate([105.5/2-0.5,82.5+5,0])
+        rotate([-45,0,0])
+            cube([105.5+2,ext_h*sqrt(2),ext_h*sqrt(2)], center=true);
+
+    
+    // hole for camera
+    translate([0,87.5/2,(16 + ext_h)/2])
+        rotate([0,90,0])
+            cylinder(d=3.4, h=10, center=true, $fn=30);
+
+    
 }
 
 
@@ -162,7 +191,7 @@ module Einsy_doors_new()
         body();
         cutouts();
         // large corner cut
-        translate( [0 , -20, -3] ) rotate([0,45,45]) cube( [ 30, 30 , 20 ] );  
+        //translate( [0 , -20, -3] ) rotate([0,45,45]) cube( [ 30, 30 , 20 ] );  
 
         translate([30,79,1]) rotate([0,0,-90]) linear_extrude(height = 0.8) 
         { text("R1",font = "helvetica:style=Bold", size=6, halign="center", valign="center"); }    
@@ -170,8 +199,8 @@ module Einsy_doors_new()
         //translate([9+25+2,22+25+2,-1])
         //    cylinder(d=50,h=10);
     }
-#translate([9,22,1])
-        fan_holder();   
+    //#translate([9,22,1])
+    //    fan_holder();   
 }
 
 Einsy_doors_new();
