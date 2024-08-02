@@ -12,6 +12,8 @@ ext_h = 0;
 fan_wt = 2;
 fan_h = 5;
 
+fan_a = 40;
+
 module body()
 {
 
@@ -57,8 +59,8 @@ module body()
     translate([102,3.5,12.8+ext_h]) rotate([0,0,0]) cylinder( h=3.2, r1=1.8, r2=3.5, $fn=30); 
 
     // fan holder
-    translate([1,22,1])
-        cube([50+2*fan_wt, 50+2*fan_wt,fan_h]);
+    translate([1,72-fan_a,1])
+        cube([fan_a+2*fan_wt, fan_a+2*fan_wt,fan_h]);
 
     
 }
@@ -152,9 +154,9 @@ module cutouts()
     translate([16,2,1.5]) rotate([0,0,45]) cube([5,5,50]);  
 
     // fan cut
-    translate([1,22,1.5])
+    translate([1,72-fan_a,1.5])
         translate([fan_wt,fan_wt,0])
-            cube([50,50,2*fan_h]);
+            cube([fan_a,fan_a,2*fan_h]);
 
     // hinge cut
     translate([105.5/2-0.5,82.5+5,0])
@@ -177,9 +179,9 @@ module fan_holder()
 
     difference()
     {
-        cube([50+2*fan_wt, 50+2*fan_wt,fan_h]);
+        cube([fan_a+2*fan_wt, fan_a+2*fan_wt,fan_h]);
         translate([fan_wt,fan_wt,-fan_h/2])
-            cube([50,50,2*fan_h]);
+            cube([fan_a,fan_a,2*fan_h]);
     }
 
 }
