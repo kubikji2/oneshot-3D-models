@@ -1,8 +1,8 @@
 // open with commandline via 
 // openscad -o test.stl -D 'param="M2x10"' crl-drawer-labels.scad
 
-use <../../solidpp/cubepp.scad>
-use <../../solidpp/modifiers/modifiers.scad>
+use <../../../solidpp/cubepp.scad>
+use <../../../solidpp/modifiers/modifiers.scad>
 
 // param="text_";
 label="??????";
